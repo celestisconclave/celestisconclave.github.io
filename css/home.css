@@ -3,11 +3,11 @@
 /* HERO */
 .hero {
     position: relative;
-    min-height: 100svh; /* svh accounts for mobile browser chrome */
+    min-height: 100svh;
     display: flex;
-    align-items: flex-start; /* top-align so padding-top controls position */
-    padding-top: calc(var(--nav-height) + var(--banner-height) + 3rem);
-    padding-bottom: 5rem;
+    align-items: center;
+    padding-top: calc(var(--nav-height) + var(--banner-height) + 2rem);
+    padding-bottom: 2rem;
     overflow: hidden;
     background: var(--clr-bg);
 }

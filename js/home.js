@@ -232,6 +232,9 @@ function initSolarSystem() {
     // Real planet data — colours and relative orbital periods
     // Periods are scaled so Mercury = 8s, others proportional but compressed
     // so all 8 are visible and moving within a reasonable timeframe
+    // Base radii defined at a reference canvas size of 400px.
+    // They get multiplied by (actualSize / 400) at draw time so
+    // everything scales proportionally on mobile.
     const PLANETS = [
         { name: 'Mercury', color: '#b5b5b5', r: 3, orbitR: 0.13, period: 8 },
         { name: 'Venus', color: '#e8cda0', r: 5, orbitR: 0.2, period: 20 },
@@ -242,6 +245,7 @@ function initSolarSystem() {
         { name: 'Uranus', color: '#7de8e8', r: 7, orbitR: 0.74, period: 420 },
         { name: 'Neptune', color: '#3f54ba', r: 6.5, orbitR: 0.86, period: 700 },
     ];
+    const BASE_SIZE = 400;
 
     // Sun glow colours
     const SUN_COLOR = '#f5d26e';
@@ -270,17 +274,17 @@ function initSolarSystem() {
     }
 
     function drawSun() {
-        // Outer glow
-        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, SUN_R * 3.5);
+        const rScale = Math.min(W, H) / BASE_SIZE;
+        const sr = Math.max(6, SUN_R * rScale);
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, sr * 3.5);
         grd.addColorStop(0, 'rgba(245,210,110,0.5)');
         grd.addColorStop(1, 'rgba(245,210,110,0)');
         ctx.beginPath();
-        ctx.arc(cx, cy, SUN_R * 3.5, 0, Math.PI * 2);
+        ctx.arc(cx, cy, sr * 3.5, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
-        // Core
         ctx.beginPath();
-        ctx.arc(cx, cy, SUN_R, 0, Math.PI * 2);
+        ctx.arc(cx, cy, sr, 0, Math.PI * 2);
         ctx.fillStyle = SUN_COLOR;
         ctx.shadowColor = SUN_COLOR;
         ctx.shadowBlur = 18;
@@ -289,43 +293,45 @@ function initSolarSystem() {
     }
 
     function drawPlanet(p, elapsed) {
+        const rScale = Math.min(W, H) / BASE_SIZE;
+        const pr = Math.max(1.5, p.r * rScale); // scaled planet radius, min 1.5px
         const orbitPx = p.orbitR * scale;
         const angle = (elapsed / (p.period * 1000)) * Math.PI * 2;
         const px = cx + Math.cos(angle) * orbitPx;
         const py = cy + Math.sin(angle) * orbitPx;
 
         // Planet glow
-        const grd = ctx.createRadialGradient(px, py, 0, px, py, p.r * 2.5);
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, pr * 2.5);
         grd.addColorStop(0, p.color);
         grd.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.beginPath();
-        ctx.arc(px, py, p.r * 2.5, 0, Math.PI * 2);
+        ctx.arc(px, py, pr * 2.5, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
 
         // Planet body
         ctx.beginPath();
-        ctx.arc(px, py, p.r, 0, Math.PI * 2);
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
         ctx.shadowBlur = 8;
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Saturn's rings (simplified — two thin ellipses)
+        // Saturn's rings
         if (p.name === 'Saturn') {
             ctx.save();
             ctx.translate(px, py);
             ctx.scale(1, 0.3);
             ctx.beginPath();
-            ctx.arc(0, 0, p.r * 2.1, 0, Math.PI * 2);
+            ctx.arc(0, 0, pr * 2.1, 0, Math.PI * 2);
             ctx.strokeStyle = 'rgba(228,209,145,0.55)';
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = 2.5 * rScale;
             ctx.stroke();
             ctx.beginPath();
-            ctx.arc(0, 0, p.r * 2.7, 0, Math.PI * 2);
+            ctx.arc(0, 0, pr * 2.7, 0, Math.PI * 2);
             ctx.strokeStyle = 'rgba(228,209,145,0.25)';
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 1.5 * rScale;
             ctx.stroke();
             ctx.restore();
         }

@@ -184,6 +184,33 @@
     }
 }
 
+@media (max-width: 900px) {
+    .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .hero-sub {
+        margin-inline: auto;
+    }
+    .hero-actions {
+        justify-content: center;
+    }
+    .hero-ornament {
+        width: min(280px, 70vw);
+        margin-inline: auto;
+    }
+    #solar-canvas {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-ornament {
+        width: min(220px, 80vw);
+    }
+}
+
 /* SPONSORS */
 .sponsors-section {
     padding-block: 3rem;

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article — Celestis Conclave</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/article.css">
+  <link rel="icon" href="assets/images/logo.png">
+</head>
+<body data-page="Blog">
+  <nav id="navbar"></nav>
+
+  <main id="article-main">
+    <!-- Rendered by JS -->
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    async function loadArticle() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id'));
+      const article = SITE_DATA.articles.find(a => a.id === id);
+      const main = document.getElementById('article-main');
+
+      if (!article) {
+        main.innerHTML = `<div class="container section" style="text-align:center">
+          <h2>Article not found</h2>
+          <a href="blog.html" class="btn btn-outline mt-md">← Back to Blog</a>
+        </div>`;
+        return;
+      }
+
+      document.title = `${article.title} — Celestis Conclave`;
+
+      // Render skeleton
+      main.innerHTML = `
+        <div class="article-hero" style="background-image: url('${article.coverImage}')">
+          <div class="article-hero-overlay"></div>
+          <div class="container article-hero-inner">
+            <a href="blog.html" class="article-back">← Back to Blog</a>
+            <div class="card-tags article-hero-tags">${tagPills(article.tags)}</div>
+            <h1 class="article-headline">${article.title}</h1>
+            <div class="article-meta">
+              <span class="article-author">${article.author}</span>
+              <span>·</span>
+              <span>${formatDate(article.date)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="container article-body-wrap">
+          <article class="article-body md-content" id="article-content">
+            <div class="article-loading">Loading article…</div>
+          </article>
+        </div>
+      `;
+
+      // Try to fetch markdown file
+      // article.html lives at root level; mdFile paths in data.js are relative to root
+      // so we can fetch them directly as-is. We also try with and without leading slash.
+      try {
+        const url = article.mdFile.startsWith('http') ? article.mdFile : article.mdFile;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const md = await resp.text();
+        document.getElementById('article-content').innerHTML = renderMarkdown(md);
+      } catch (err) {
+        // Fallback: show preview as placeholder
+        document.getElementById('article-content').innerHTML = `
+          <p style="color:var(--clr-text-3); font-style:italic; font-family:var(--font-serif); margin-bottom:1rem;">
+            The full article could not be loaded (<code>${article.mdFile}</code>). Make sure the file exists in your repository and the site is served over HTTP (not opened as a local file).
+          </p>
+          <p>${article.preview}</p>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadArticle);
+  </script>
+</body>
+</html>

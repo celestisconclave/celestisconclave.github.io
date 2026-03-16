@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Celestis Conclave</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/blog.css">
+  <link rel="icon" href="assets/images/logo.png">
+</head>
+<body data-page="Blog">
+  <nav id="navbar"></nav>
+
+  <main>
+    <section class="page-hero section">
+      <div class="container page-hero-inner">
+        <span class="eyebrow">The Celestis Blog</span>
+        <h1>Articles & <em class="gold">Writing</em></h1>
+        <p style="color:var(--clr-text-2); max-width:520px; margin-top:0.75rem;">
+          In-depth articles, tutorials, and essays written by the Core Council and members.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="filter-bar">
+          <input type="text" id="blog-search" class="filter-search" placeholder="Search articles…">
+          <div class="filter-tags" id="blog-tag-filters"></div>
+        </div>
+        <div id="blog-grid" class="blog-grid"></div>
+        <p id="no-results" class="no-results" style="display:none; text-align:center; color:var(--clr-text-3); margin-top:3rem; font-family:var(--font-serif); font-size:1.1rem;">
+          No articles found.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/blog.js"></script>
+</body>
+</html>

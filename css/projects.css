@@ -1,0 +1,36 @@
+/* PROJECTS PAGE */
+.proj-card { cursor: pointer; }
+.proj-card-body { padding: 1.25rem 1.5rem 1.5rem; }
+.proj-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--clr-text);
+  line-height: 1.3;
+}
+.proj-card-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--clr-text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.modal-hero-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.modal-body { }
+.modal-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+}

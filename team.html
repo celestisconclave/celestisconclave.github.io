@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet the Team — Celestis Conclave</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/team.css">
+  <link rel="icon" href="assets/images/logo.png">
+</head>
+<body data-page="Team">
+  <nav id="navbar"></nav>
+
+  <main>
+    <section class="page-hero section">
+      <div class="container page-hero-inner">
+        <span class="eyebrow">The Council</span>
+        <h1>Meet the <em class="gold">Team</em></h1>
+        <p style="color:var(--clr-text-2); max-width:520px; margin-top:0.75rem;">
+          The people behind Celestis — elected by the membership to lead, organise, and inspire.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="team-grid" id="team-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function renderTeam() {
+      const grid = document.getElementById('team-grid');
+      if (!grid) return;
+      grid.innerHTML = SITE_DATA.team.map((m, i) => `
+        <div class="team-card reveal" style="animation-delay:${i * 0.07}s">
+          <div class="team-photo-wrap">
+            <img src="${m.photo}" alt="${m.name}" class="team-photo"
+              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 300 300\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'300\\' height=\\'300\\'/%3E%3Ctext fill=\\'%23443a60\\' font-size=\\'100\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dominant-baseline=\\'middle\\'%3E${m.name[0]}%3C/text%3E%3C/svg%3E'">
+            <div class="team-photo-ring"></div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-role">${m.role}</div>
+            <h3 class="team-name">${m.name}</h3>
+            <p class="team-bio">${m.bio}</p>
+            <div class="team-socials">
+              ${m.socials?.email ? `<a href="mailto:${m.socials.email}" class="social-link" aria-label="Email" title="${m.socials.email}">✉</a>` : ''}
+              ${m.socials?.phone ? `<a href="tel:${m.socials.phone}" class="social-link" aria-label="Phone" title="${m.socials.phone}">✆</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', renderTeam);
+  </script>
+</body>
+</html>

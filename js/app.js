@@ -140,7 +140,7 @@ function renderFooter() {
     <div class="footer-inner">
       <div class="footer-brand">
         <img src="assets/images/logo.png" alt="Celestis Conclave" class="footer-logo" onerror="this.style.display='none'">
-        <p class="footer-tagline">Curiosity. Rigour. Discovery.</p>
+        <p class="footer-tagline">Novus. Ordo. Astorum.</p>
       </div>
       <div class="footer-links">
         <div class="footer-col">

@@ -176,23 +176,33 @@ function renderProjectsList() {
         list.innerHTML = '<p style="color:var(--clr-text-3);font-size:.9rem">No projects yet.</p>';
         return;
     }
+    const featuredCount = localData.projects.filter((p) => p.featured).length;
     list.innerHTML = localData.projects
-        .map(
-            (p) => `
-    <div class="admin-list-item" id="proj-row-${p.id}">
-      <img src="../${p.image}" class="admin-list-thumb" alt=""
-        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 64 40\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'64\\' height=\\'40\\'/%3E%3C/svg%3E'">
-      <div class="admin-list-info">
-        <div class="admin-list-title">${p.title}</div>
-        <div class="admin-list-meta">${p.tags.join(' · ')}</div>
+        .map((p) => {
+            const isChecked = p.featured;
+            const isDisabled = !isChecked && featuredCount >= 3;
+            return `
+      <div class="admin-list-item" id="proj-row-${p.id}">
+        <img src="../${p.image}" class="admin-list-thumb" alt=""
+          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 64 40\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'64\\' height=\\'40\\'/%3E%3C/svg%3E'">
+        <div class="admin-list-info">
+          <div class="admin-list-title">${p.title}</div>
+          <div class="admin-list-meta">${p.tags.join(' · ')}</div>
+        </div>
+        <label class="featured-toggle ${isDisabled ? 'featured-toggle--disabled' : ''}" title="${isDisabled ? 'Maximum 3 featured projects' : 'Toggle featured'}">
+          <input type="checkbox"
+            ${isChecked ? 'checked' : ''}
+            ${isDisabled ? 'disabled' : ''}
+            onchange="toggleFeatured('project', ${p.id}, this.checked)">
+          <span class="featured-toggle-label">★ Featured</span>
+        </label>
+        <div class="admin-list-actions">
+          <button class="btn-sm" onclick="openProjectForm(${p.id})">Edit</button>
+          <button class="btn-sm btn-danger" onclick="confirmDelete('project', ${p.id})">Delete</button>
+        </div>
       </div>
-      <div class="admin-list-actions">
-        <button class="btn-sm" onclick="openProjectForm(${p.id})">Edit</button>
-        <button class="btn-sm btn-danger" onclick="confirmDelete('project', ${p.id})">Delete</button>
-      </div>
-    </div>
-  `,
-        )
+    `;
+        })
         .join('');
 }
 
@@ -204,25 +214,49 @@ function renderArticlesList() {
         list.innerHTML = '<p style="color:var(--clr-text-3);font-size:.9rem">No articles yet.</p>';
         return;
     }
+    const featuredCount = localData.articles.filter((a) => a.featured).length;
     list.innerHTML = localData.articles
-        .map(
-            (a) => `
-    <div class="admin-list-item" id="art-row-${a.id}">
-      <img src="../${a.coverImage}" class="admin-list-thumb" alt=""
-        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 64 40\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'64\\' height=\\'40\\'/%3E%3C/svg%3E'">
-      <div class="admin-list-info">
-        <div class="admin-list-title">${a.title}</div>
-        <div class="admin-list-meta">${a.author} · ${a.date}</div>
+        .map((a) => {
+            const isChecked = a.featured;
+            const isDisabled = !isChecked && featuredCount >= 3;
+            return `
+      <div class="admin-list-item" id="art-row-${a.id}">
+        <img src="../${a.coverImage}" class="admin-list-thumb" alt=""
+          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 64 40\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'64\\' height=\\'40\\'/%3E%3C/svg%3E'">
+        <div class="admin-list-info">
+          <div class="admin-list-title">${a.title}</div>
+          <div class="admin-list-meta">${a.author} · ${a.date}</div>
+        </div>
+        <label class="featured-toggle ${isDisabled ? 'featured-toggle--disabled' : ''}" title="${isDisabled ? 'Maximum 3 featured articles' : 'Toggle featured'}">
+          <input type="checkbox"
+            ${isChecked ? 'checked' : ''}
+            ${isDisabled ? 'disabled' : ''}
+            onchange="toggleFeatured('article', ${a.id}, this.checked)">
+          <span class="featured-toggle-label">★ Featured</span>
+        </label>
+        <div class="admin-list-actions">
+          <button class="btn-sm" onclick="openArticleForm(${a.id})">Edit</button>
+          <button class="btn-sm btn-danger" onclick="confirmDelete('article', ${a.id})">Delete</button>
+        </div>
       </div>
-      <div class="admin-list-actions">
-        <button class="btn-sm" onclick="openArticleForm(${a.id})">Edit</button>
-        <button class="btn-sm btn-danger" onclick="confirmDelete('article', ${a.id})">Delete</button>
-      </div>
-    </div>
-  `,
-        )
+    `;
+        })
         .join('');
 }
+
+window.toggleFeatured = function(type, id, value) {
+  if (type === 'project') {
+    const proj = localData.projects.find(p => p.id === id);
+    if (proj) proj.featured = value;
+    renderProjectsList();
+  } else if (type === 'article') {
+    const art = localData.articles.find(a => a.id === id);
+    if (art) art.featured = value;
+    renderArticlesList();
+  }
+  markChanged();
+  renderOverview();
+};
 
 // ── RESOURCES LIST ────────────────────────────────────────────
 function renderResourcesList() {
@@ -383,12 +417,6 @@ function openProjectForm(id = null) {
       <label for="proj-link">External Link (GitHub, website…)</label>
       <input type="url" id="proj-link" class="form-input" value="${isEdit && p.link ? escAttr(p.link) : ''}" placeholder="https://…">
     </div>
-    <div class="form-group">
-      <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
-        <input type="checkbox" id="proj-featured" ${isEdit && p.featured ? 'checked' : ''}>
-        Featured on homepage
-      </label>
-    </div>
     <div style="display:flex;gap:1rem;margin-top:1.5rem;">
       <button class="btn btn-gold" onclick="saveProject(${id || 'null'})">
         ${isEdit ? 'Save Changes' : 'Add Project'}
@@ -423,7 +451,6 @@ window.saveProject = function (id) {
                 proj.longDesc = document.getElementById('proj-long').value.trim();
                 proj.tags = tags;
                 proj.link = document.getElementById('proj-link').value.trim();
-                proj.featured = document.getElementById('proj-featured').checked;
                 if (imagePath) proj.image = imagePath;
             }
         } else {
@@ -435,7 +462,7 @@ window.saveProject = function (id) {
                 longDesc: document.getElementById('proj-long').value.trim(),
                 tags,
                 link: document.getElementById('proj-link').value.trim(),
-                featured: document.getElementById('proj-featured').checked,
+                featured: false,
                 image: imagePath || 'assets/images/projects/placeholder.jpg',
                 _newImageFile: imgFile || null,
             });
@@ -507,12 +534,6 @@ function openArticleForm(id = null) {
       <label>Tags</label>
       ${tagsControl.html}
     </div>
-    <div class="form-group">
-      <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
-        <input type="checkbox" id="art-featured" ${isEdit && a.featured ? 'checked' : ''}>
-        Featured on homepage
-      </label>
-    </div>
     <div style="display:flex;gap:1rem;margin-top:1.5rem;">
       <button class="btn btn-gold" onclick="saveArticle(${id || 'null'})">
         ${isEdit ? 'Save Changes' : 'Add Article'}
@@ -576,7 +597,6 @@ window.saveArticle = function (id) {
             art.date = date;
             art.preview = preview;
             art.tags = tags;
-            art.featured = document.getElementById('art-featured').checked;
             if (imgPath) art.coverImage = imgPath;
             if (mdPath) art.mdFile = mdPath;
         }
@@ -589,7 +609,7 @@ window.saveArticle = function (id) {
             date,
             preview,
             tags,
-            featured: document.getElementById('art-featured').checked,
+            featured: false,
             coverImage: imgPath || 'assets/articles/images/placeholder.jpg',
             mdFile: mdPath || `assets/articles/md/${fname}.md`,
         });

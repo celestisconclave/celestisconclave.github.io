@@ -65,7 +65,8 @@
 }
 
 .article-body-wrap {
-    padding-block: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
 }
 
 .article-body {

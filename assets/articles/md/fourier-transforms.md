@@ -113,5 +113,3 @@ Eugene Wigner famously wrote about "the unreasonable effectiveness of mathematic
 The universe, it seems, has a deep preference for oscillation.
 
 ---
-
-*Priya Sharma is the Vice President of Celestis Conclave and a Mathematics & Computer Science student at [University]. She can be reached at priya@celestisconclave.org.*

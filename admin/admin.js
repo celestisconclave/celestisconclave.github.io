@@ -874,7 +874,7 @@ function initPushChanges() {
             pendingChanges = false;
             window._pendingFiles = {};
             updatePendingSummary();
-            showToast('✓ Changes pushed to GitHub successfully!');
+            showToast('Changes pushed to GitHub successfully!');
         } catch (err) {
             showToast(`Push failed: ${err.message}`, 'error');
             console.error(err);

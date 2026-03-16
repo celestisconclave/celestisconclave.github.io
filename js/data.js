@@ -10,33 +10,7 @@ const SITE_DATA = {
     "link": "./contact.html",
     "linkText": "Apply Now"
   },
-  "sponsors": [
-    {
-      "name": "Luminary Labs",
-      "logo": "assets/images/sponsors/luminary.png",
-      "url": "#"
-    },
-    {
-      "name": "Arcturus Tech",
-      "logo": "assets/images/sponsors/arcturus.png",
-      "url": "#"
-    },
-    {
-      "name": "Vega Foundation",
-      "logo": "assets/images/sponsors/vega.png",
-      "url": "#"
-    },
-    {
-      "name": "Nebula Grants",
-      "logo": "assets/images/sponsors/nebula.png",
-      "url": "#"
-    },
-    {
-      "name": "Orion Institute",
-      "logo": "assets/images/sponsors/orion.png",
-      "url": "#"
-    }
-  ],
+  "sponsors": [],
   "team": [
     {
       "id": 1,

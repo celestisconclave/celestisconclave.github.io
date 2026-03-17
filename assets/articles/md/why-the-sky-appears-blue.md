@@ -1,6 +1,6 @@
 ## Science's Answer to our Childhood Question
 
-I'm sure all of us have asked our parents at some time in our life, *why is the sky blue?*? It's a natural question, we spend time looking up and the sky, and its always blue (with the exception of sunrise, sunset, and nighttime, but I'll get to those later).
+I'm sure all of us have asked our parents at some time in our life, _why is the sky blue?_? It's a natural question, we spend time looking up and the sky, and its always blue (with the exception of sunrise, sunset, and nighttime, but I'll get to those later).
 
 The core reason for the sky's blue colour is **scattering**. Light from the sun scatters in the atmosphere after hitting particles. As we know, light is made up of different wavelengths, and its the scattering of those different wavelenghts that contributes to the sky's colour.
 
@@ -8,21 +8,24 @@ The core reason for the sky's blue colour is **scattering**. Light from the sun 
 
 ### Rayleigh Scattering
 
-Rayleigh scattering is the phenomenon of light scattering, where the particles are *smaller* than the wavelength. It is named after Lord Rayleigh.
+Rayleigh scattering is the phenomenon of light scattering, where the particles are _smaller_ than the wavelength. It is named after Lord Rayleigh.
 
 The main relationship Rayleigh scattering gives us is
-$$ I \propto \dfrac{1}{\lambda^4} $$
+
+$$
+x = \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cdots}}}}}
+$$
 
 Where $I$ is the scattering intensity and $\lambda$ is the wavelength.
 
 Because of this, smaller wavelengths scatter much more strongly, and blue is at the shorter end of the spectrum.
 Hence, blue light is scattered more and fills up the sky.
 
-Now, you may follow up with *well then, why isn't the sky violet?*
+Now, you may follow up with _well then, why isn't the sky violet?_
 
 ---
 
-### Why *isn't* the sky violet?
+### Why _isn't_ the sky violet?
 
 This is not so much about the scattering than the optics of our eyes and the layers of the atmospheres. Based on the physics, it is absolutely right to consider that our sky should be violet, but our eyes are naturally less sensitive to violet light, and the upper atmosphere also absorbs some violet and UV light.
 

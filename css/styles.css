@@ -583,7 +583,7 @@ body > section:first-of-type {
 .tag-pill {
     display: inline-block;
     padding: 0.2rem 0.65rem;
-    background: rgba(124, 58, 237, 0.5);
+    background: rgba(124, 58, 237, 0.12);
     border: 1px solid rgba(124, 58, 237, 0.25);
     border-radius: 100px;
     font-size: 0.72rem;

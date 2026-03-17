@@ -328,8 +328,8 @@ function initCursorTrail() {
     z-index: 99999;
     transform: translate(-50%, -50%);
     background: radial-gradient(circle,
-      rgba(124,58,237,0.09) 0%,
-      rgba(124,58,237,0.04) 40%,
+      rgba(212,168,67,0.08) 0%,
+      rgba(212,168,67,0.03) 40%,
       transparent 70%
     );
     transition: opacity 0.4s ease;

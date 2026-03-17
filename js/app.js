@@ -182,6 +182,48 @@ function renderFooter() {
 // ── MARKDOWN RENDERER (simple) ─────────────────────────────────
 function renderMarkdown(md) {
     if (!md) return '';
+    // ── FOOTNOTES ──────────────────────────────────────────────
+    // Pass 1: collect footnote definitions [^id]: text
+    const footnotes = {};
+    let fnCounter = 0;
+    md = md.replace(/^\[\^([^\]]+)\]:\s*(.+)$/gm, (_, id, text) => {
+        footnotes[id] = { text: text.trim(), index: null };
+        return ''; // remove definition from main text
+    });
+
+    // Pass 2: replace inline references [^id] with superscript links
+    // We assign index numbers in order of first appearance
+    md = md.replace(/\[\^([^\]]+)\]/g, (_, id) => {
+        if (!footnotes[id]) return `[^${id}]`; // undefined ref — leave as-is
+        if (footnotes[id].index === null) {
+        fnCounter++;
+        footnotes[id].index = fnCounter;
+        }
+        const n = footnotes[id].index;
+        return `<sup><a href="#fn-${n}" id="fnref-${n}" class="fn-ref">${n}</a></sup>`;
+    });
+
+    // Pass 3: build footnotes list to append after article
+    let fnHtml = '';
+    const fnEntries = Object.values(footnotes)
+        .filter(f => f.index !== null)
+        .sort((a, b) => a.index - b.index);
+
+    if (fnEntries.length > 0) {
+        const items = Object.entries(footnotes)
+        .filter(([_, f]) => f.index !== null)
+        .sort(([_, a], [__, b]) => a.index - b.index)
+        .map(([_, f]) => `
+            <li id="fn-${f.index}" class="fn-item">
+            <span class="fn-number">${f.index}</span>
+            <span class="fn-text">${f.text}
+                <a href="#fnref-${f.index}" class="fn-back" title="Back to text">↩</a>
+            </span>
+            </li>`)
+        .join('');
+        fnHtml = `<div class="footnotes"><hr><ol class="fn-list">${items}</ol></div>`;
+    }
+
     let html = md;
     // Fenced code blocks
     html = html.replace(
@@ -237,7 +279,7 @@ function renderMarkdown(md) {
 
     // Restore display math blocks
     html = html.replace(/%%MATHBLOCK_(\d+)%%/g, (_, i) => mathBlocks[parseInt(i)]);
-    return html;
+    return html + fnHtml;
 }
 
 function escHtml(str) {

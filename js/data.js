@@ -236,79 +236,21 @@ const SITE_DATA = {
   "articles": [
     {
       "id": 1,
-      "title": "The Unreasonable Effectiveness of Fourier Transforms",
-      "author": "Priya Sharma",
-      "date": "2024-11-15",
-      "coverImage": "assets/articles/images/fourier.jpg",
-      "tags": [
-        "Mathematics",
-        "Signal Processing",
-        "Physics"
-      ],
-      "preview": "From JPEG compression to MRI machines, one elegant mathematical idea underpins more of modern technology than almost anything else. Here's why.",
-      "mdFile": "assets/articles/md/fourier-transforms.md",
-      "featured": true
-    },
-    {
-      "id": 2,
-      "title": "Building a Quantum Circuit Simulator in Python",
-      "author": "Aryan Mehta",
-      "date": "2024-10-28",
-      "coverImage": "assets/articles/images/quantum.jpg",
-      "tags": [
-        "Quantum Computing",
-        "Python",
-        "Tutorial"
-      ],
-      "preview": "Quantum computing doesn't require exotic hardware to start exploring. In this tutorial, we build a fully functional statevector simulator from scratch using only NumPy.",
-      "mdFile": "assets/articles/md/quantum-simulator.md",
-      "featured": true
-    },
-    {
-      "id": 3,
-      "title": "Dark Matter: What We Know, What We Don't, and Why It Matters",
-      "author": "Aisha Khan",
-      "date": "2024-10-10",
-      "coverImage": "assets/articles/images/dark-matter.jpg",
-      "tags": [
-        "Astrophysics",
-        "Physics",
-        "Research"
-      ],
-      "preview": "We have compelling evidence that 85% of the matter in the universe is invisible. A survey of the evidence, the candidates, and the ongoing hunt.",
-      "mdFile": "assets/articles/md/dark-matter.md",
-      "featured": false
-    },
-    {
-      "id": 4,
-      "title": "Why Your Machine Learning Model is Probably Overfit",
-      "author": "Rohan Verma",
-      "date": "2024-09-22",
-      "coverImage": "assets/articles/images/overfitting.jpg",
-      "tags": [
-        "Machine Learning",
-        "Statistics",
-        "Tutorial"
-      ],
-      "preview": "Overfitting is the silent killer of ML projects. Understanding the bias-variance tradeoff is the first step to building models that actually generalise.",
-      "mdFile": "assets/articles/md/overfitting.md",
-      "featured": false
-    },
-    {
-      "id": 5,
-      "title": "A Brief History of the Laser",
-      "author": "Dev Patel",
-      "date": "2024-09-05",
-      "coverImage": "assets/articles/images/laser.jpg",
+      "title": "Why the Sky Appears Blue: On Rayleigh Scattering",
+      "author": "Rishit Choudhary",
+      "date": "2026-03-17",
+      "coverImage": "assets/articles/images/why-the-sky-appears-blue.jpg",
       "tags": [
         "Physics",
-        "History of Science",
-        "Optics"
+        "Optics",
+        "Light",
+        "Atmosphere",
+        "Natural Phenomena"
       ],
-      "preview": "From Einstein's 1917 prediction of stimulated emission to the femtosecond lasers of today, the story of the laser is a masterclass in the interplay between theory and experiment.",
-      "mdFile": "assets/articles/md/laser-history.md",
-      "featured": false
-    }
+      "preview": "The scientific answer to our childhood question—why is the sky blue?",
+      "mdFile": "assets/articles/md/why-the-sky-appears-blue.md",
+      "featured": true
+    },
   ],
   "resources": [
     {

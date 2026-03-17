@@ -945,6 +945,57 @@ button.tag-pill.active {
     font-weight: 600;
 }
 
+/* Footnote references in text */
+.md-content .fn-ref {
+  color: var(--clr-purple-light);
+  font-size: 0.75em;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: none;
+  vertical-align: super;
+  line-height: 0;
+  transition: color var(--transition);
+}
+.md-content .fn-ref:hover { color: var(--clr-gold); }
+
+/* Footnotes block at bottom */
+.md-content .footnotes {
+  margin-top: 3rem;
+}
+.md-content .footnotes hr {
+  margin-bottom: 1.5rem;
+}
+.md-content .fn-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.md-content .fn-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.88rem;
+  color: var(--clr-text-3);
+  line-height: 1.6;
+}
+.md-content .fn-number {
+  color: var(--clr-purple-light);
+  font-weight: 600;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  min-width: 1.2rem;
+}
+.md-content .fn-back {
+  color: var(--clr-text-3);
+  margin-left: 0.4rem;
+  font-size: 0.85em;
+  border-bottom: none;
+  transition: color var(--transition);
+}
+.md-content .fn-back:hover { color: var(--clr-gold); }
+
 /* ── UTILITY ─────────────────────────────────────────────────── */
 .text-center {
     text-align: center;

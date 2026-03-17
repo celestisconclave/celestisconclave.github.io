@@ -83,15 +83,17 @@
 
 /* KaTeX display math spacing */
 .katex-display {
-  margin: 1.5em 0 !important;
-  overflow: visible !important;
+    margin: 1.5em 0 !important;
+    overflow: visible !important;
+    padding-bottom: 2px;
 }
 
 .katex-display > .katex {
-  overflow: visible !important;
-  max-height: none !important;
+    overflow: visible !important;
+    max-height: none !important;
 }
 
 .katex-display > .katex > .katex-html {
-  overflow: visible !important;
+    overflow-x: auto;
+    overflow-y: visible !important;
 }

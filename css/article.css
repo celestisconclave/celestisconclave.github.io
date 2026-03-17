@@ -96,4 +96,5 @@
 .katex-display > .katex > .katex-html {
     overflow-x: auto;
     overflow-y: visible !important;
+    margin-bottom: -4px;
 }

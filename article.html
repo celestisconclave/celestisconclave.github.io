@@ -16,7 +16,7 @@
 
         <div id="reading-progress"></div>
         <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
-            <i class="fa-solid fa-arrow-up"></i>
+            ⇧
         </button>
 
         <main id="article-main" class="has-hero">
@@ -195,8 +195,10 @@
 
                 // Reading time — count words in rendered text
                 const badge = document.getElementById('reading-time-badge');
-                if (badge) badge.textContent = calcReadingTime(content.innerText);
-
+                if (badge)
+                    badge.innerHTML = `<i class="fa-solid fa-clock"></i>${calcReadingTime(
+                        document.getElementById('article-content').innerText,
+                    )}`;
                 // Copy buttons
                 initCopyButtons();
             });

@@ -196,8 +196,8 @@ function renderMarkdown(md) {
     md = md.replace(/\[\^([^\]]+)\]/g, (_, id) => {
         if (!footnotes[id]) return `[^${id}]`; // undefined ref — leave as-is
         if (footnotes[id].index === null) {
-        fnCounter++;
-        footnotes[id].index = fnCounter;
+            fnCounter++;
+            footnotes[id].index = fnCounter;
         }
         const n = footnotes[id].index;
         return `<sup><a href="#fn-${n}" id="fnref-${n}" class="fn-ref">${n}</a></sup>`;
@@ -206,21 +206,23 @@ function renderMarkdown(md) {
     // Pass 3: build footnotes list to append after article
     let fnHtml = '';
     const fnEntries = Object.values(footnotes)
-        .filter(f => f.index !== null)
+        .filter((f) => f.index !== null)
         .sort((a, b) => a.index - b.index);
 
     if (fnEntries.length > 0) {
         const items = Object.entries(footnotes)
-        .filter(([_, f]) => f.index !== null)
-        .sort(([_, a], [__, b]) => a.index - b.index)
-        .map(([_, f]) => `
+            .filter(([_, f]) => f.index !== null)
+            .sort(([_, a], [__, b]) => a.index - b.index)
+            .map(
+                ([_, f]) => `
             <li id="fn-${f.index}" class="fn-item">
             <span class="fn-number">${f.index}</span>
             <span class="fn-text">${f.text}
                 <a href="#fnref-${f.index}" class="fn-back" title="Back to text">↩</a>
             </span>
-            </li>`)
-        .join('');
+            </li>`,
+            )
+            .join('');
         fnHtml = `<div class="footnotes"><hr><ol class="fn-list">${items}</ol></div>`;
     }
 
@@ -241,8 +243,11 @@ function renderMarkdown(md) {
     html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
     // Bold & italic
     html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+    html = html.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
     html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/_([^_\s][^_]*[^_\s]|[^_\s])_/g, '<em>$1</em>');
     // Blockquotes
     html = html.replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>');
     // Images

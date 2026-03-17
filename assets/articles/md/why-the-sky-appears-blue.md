@@ -1,6 +1,6 @@
 ## Science's Answer to our Childhood Question
 
-I'm sure all of us have asked our parents at some time in our life, _why is the sky blue?_? It's a natural question, we spend time looking up and the sky, and its always blue (with the exception of sunrise, sunset, and nighttime, but I'll get to those later).
+I'm sure all of us have asked our parents at some time in our life, _why is the sky blue?_ It's a natural question, we spend time looking up and the sky, and its always blue (with the exception of sunrise, sunset, and nighttime, but I'll get to those later).
 
 The core reason for the sky's blue colour is **scattering**. Light from the sun scatters in the atmosphere after hitting particles. As we know, light is made up of different wavelengths, and its the scattering of those different wavelenghts that contributes to the sky's colour.
 
@@ -8,13 +8,10 @@ The core reason for the sky's blue colour is **scattering**. Light from the sun 
 
 ### Rayleigh Scattering
 
-Rayleigh scattering is the phenomenon of light scattering, where the particles are _smaller_ than the wavelength. It is named after Lord Rayleigh.
+Rayleigh scattering is the phenomenon of light scattering, where the particles are _smaller_ than the wavelength [^1]. It is named after Lord Rayleigh.
 
 The main relationship Rayleigh scattering gives us is
-
-$$
-x = \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cdots}}}}}
-$$
+$$I \propto \dfrac{1}{\lambda ^4}$$
 
 Where $I$ is the scattering intensity and $\lambda$ is the wavelength.
 
@@ -46,3 +43,5 @@ At night, the sky is dark because there simply is no sunlight, so it appears dar
 The colour of the sky is determined by the interaction between sunlight and the Earth’s atmosphere. Rayleigh scattering explains why shorter wavelengths are more prevalent during the day, and how changes in the light path account for sunrise and sunset changes.
 
 ---
+
+[^1]: This case is known as Mie scattering

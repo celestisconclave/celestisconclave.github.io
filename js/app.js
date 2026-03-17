@@ -314,67 +314,6 @@ async function sha256(message) {
     return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ── CURSOR GLOW ───────────────────────────────────────────
-function initCursorTrail() {
-    if (window.matchMedia('(hover: none)').matches) return;
-
-    const glow = document.createElement('div');
-    glow.style.cssText = `
-    position: fixed;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle,
-      rgba(212,168,67,0.08) 0%,
-      rgba(212,168,67,0.03) 40%,
-      transparent 70%
-    );
-    transition: opacity 0.4s ease;
-    opacity: 0;
-    will-change: transform;
-  `;
-    document.body.appendChild(glow);
-
-    let curX = 0,
-        curY = 0;
-    let glowX = 0,
-        glowY = 0;
-    let visible = false;
-    let idleTimer = null;
-
-    window.addEventListener('mousemove', (e) => {
-        curX = e.clientX;
-        curY = e.clientY;
-        if (!visible) {
-            visible = true;
-            glow.style.opacity = '1';
-        }
-        clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => {
-            visible = false;
-            glow.style.opacity = '0';
-        }, 2000);
-    });
-
-    window.addEventListener('mouseleave', () => {
-        visible = false;
-        glow.style.opacity = '0';
-    });
-
-    // Smoothly lag behind the cursor for a soft floating feel
-    function frame() {
-        glowX += (curX - glowX) * 0.1;
-        glowY += (curY - glowY) * 0.1;
-        glow.style.left = glowX + 'px';
-        glow.style.top = glowY + 'px';
-        requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-}
-
 // ── ON DOM READY ───────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     // Don't render banner/nav/footer on admin page
@@ -382,5 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAnnouncement();
     renderNavbar(document.body.dataset.page || '');
     renderFooter();
-    initCursorTrail();
 });

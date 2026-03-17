@@ -223,18 +223,11 @@ function initReveal() {
     els.forEach((el) => obs.observe(el));
 }
 
-// Solar system orrery
 function initSolarSystem() {
     const canvas = document.getElementById('solar-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    // Real planet data — colours and relative orbital periods
-    // Periods are scaled so Mercury = 8s, others proportional but compressed
-    // so all 8 are visible and moving within a reasonable timeframe
-    // Base radii defined at a reference canvas size of 400px.
-    // They get multiplied by (actualSize / 400) at draw time so
-    // everything scales proportionally on mobile.
     const PLANETS = [
         { name: 'Mercury', color: '#b5b5b5', r: 3, orbitR: 0.13, period: 8 },
         { name: 'Venus', color: '#e8cda0', r: 5, orbitR: 0.2, period: 20 },
@@ -245,37 +238,53 @@ function initSolarSystem() {
         { name: 'Uranus', color: '#7de8e8', r: 7, orbitR: 0.74, period: 420 },
         { name: 'Neptune', color: '#3f54ba', r: 6.5, orbitR: 0.86, period: 700 },
     ];
+
+    const SUN_COLOR = '#f5d26e';
     const BASE_SIZE = 400;
 
-    // Sun glow colours
-    const SUN_COLOR = '#f5d26e';
-    const SUN_GLOW = 'rgba(245,210,110,0.15)';
-    const SUN_R = 14;
+    // Each planet gets a nudge state — an extra angle offset that
+    // springs back to 0 when the cursor moves away
+    PLANETS.forEach((p) => {
+        p.nudge = 0; // current extra angle offset (radians)
+        p.nudgeVel = 0; // velocity of the nudge spring
+        p.highlighted = false;
+    });
 
-    let W, H, cx, cy, scale;
-    let startTime = null;
+    let W,
+        H,
+        cx,
+        cy,
+        scale,
+        startTime = null;
+    // Mouse position in canvas-local coordinates
+    let mouseCanvasX = null,
+        mouseCanvasY = null;
 
     function resize() {
-        const rect = canvas.parentElement.getBoundingClientRect();
-        W = canvas.width = rect.width || canvas.parentElement.offsetWidth;
-        H = canvas.height = rect.height || canvas.parentElement.offsetHeight;
+        const parent = canvas.parentElement;
+        W = canvas.width = parent.offsetWidth || 300;
+        H = canvas.height = parent.offsetHeight || 300;
         cx = W / 2;
         cy = H / 2;
-        // scale so the outermost orbit fits with a small margin
-        scale = Math.min(W, H) * 0.5 * 0.97;
+        scale = Math.min(W, H) * 0.47;
     }
 
-    function drawOrbit(r) {
+    function rs() {
+        return Math.min(W, H) / BASE_SIZE;
+    }
+
+    function drawOrbit(p) {
+        const orbitPx = p.orbitR * scale;
         ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(180,160,255,0.10)';
-        ctx.lineWidth = 1;
+        ctx.arc(cx, cy, orbitPx, 0, Math.PI * 2);
+        // Glow the orbit ring when planet is highlighted
+        ctx.strokeStyle = p.highlighted ? `rgba(${hexToRgb(p.color)},0.35)` : 'rgba(180,160,255,0.10)';
+        ctx.lineWidth = p.highlighted ? 1.5 : 1;
         ctx.stroke();
     }
 
     function drawSun() {
-        const rScale = Math.min(W, H) / BASE_SIZE;
-        const sr = Math.max(6, SUN_R * rScale);
+        const sr = Math.max(5, 14 * rs());
         const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, sr * 3.5);
         grd.addColorStop(0, 'rgba(245,210,110,0.5)');
         grd.addColorStop(1, 'rgba(245,210,110,0)');
@@ -287,54 +296,91 @@ function initSolarSystem() {
         ctx.arc(cx, cy, sr, 0, Math.PI * 2);
         ctx.fillStyle = SUN_COLOR;
         ctx.shadowColor = SUN_COLOR;
-        ctx.shadowBlur = 18;
+        ctx.shadowBlur = 16;
         ctx.fill();
         ctx.shadowBlur = 0;
     }
 
-    function drawPlanet(p, elapsed) {
-        const rScale = Math.min(W, H) / BASE_SIZE;
-        const pr = Math.max(1.5, p.r * rScale); // scaled planet radius, min 1.5px
+    function drawPlanet(p, baseAngle) {
+        const pr = Math.max(1.5, p.r * rs());
         const orbitPx = p.orbitR * scale;
-        const angle = (elapsed / (p.period * 1000)) * Math.PI * 2;
+        const angle = baseAngle + p.nudge;
         const px = cx + Math.cos(angle) * orbitPx;
         const py = cy + Math.sin(angle) * orbitPx;
 
-        // Planet glow
-        const grd = ctx.createRadialGradient(px, py, 0, px, py, pr * 2.5);
+        // Glow
+        const glowR = p.highlighted ? pr * 3.5 : pr * 2.5;
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, glowR);
         grd.addColorStop(0, p.color);
         grd.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.beginPath();
-        ctx.arc(px, py, pr * 2.5, 0, Math.PI * 2);
+        ctx.arc(px, py, glowR, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
 
-        // Planet body
+        // Body
         ctx.beginPath();
         ctx.arc(px, py, pr, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = p.highlighted ? 16 : 8;
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Saturn's rings
+        // Saturn rings
         if (p.name === 'Saturn') {
             ctx.save();
             ctx.translate(px, py);
-            ctx.scale(1, 0.3);
+            ctx.scale(1, 0.28);
             ctx.beginPath();
-            ctx.arc(0, 0, pr * 2.1, 0, Math.PI * 2);
+            ctx.arc(0, 0, pr * 2.2, 0, Math.PI * 2);
             ctx.strokeStyle = 'rgba(228,209,145,0.55)';
-            ctx.lineWidth = 2.5 * rScale;
+            ctx.lineWidth = Math.max(1, 2.5 * rs());
             ctx.stroke();
             ctx.beginPath();
-            ctx.arc(0, 0, pr * 2.7, 0, Math.PI * 2);
+            ctx.arc(0, 0, pr * 2.8, 0, Math.PI * 2);
             ctx.strokeStyle = 'rgba(228,209,145,0.25)';
-            ctx.lineWidth = 1.5 * rScale;
+            ctx.lineWidth = Math.max(1, 1.5 * rs());
             ctx.stroke();
             ctx.restore();
         }
+
+        // Planet name tooltip when highlighted
+        if (p.highlighted) {
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.font = `${Math.max(9, 11 * rs())}px Jost, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText(p.name, px, py - pr - 6 * rs());
+        }
+
+        return { px, py }; // return position for hit-testing
+    }
+
+    // Update nudge spring physics
+    function updateNudge(p, isNear, elapsed) {
+        if (isNear) {
+            // Apply a constant angular push in the prograde direction
+            const pushStrength = 0.0008;
+            p.nudgeVel += pushStrength;
+        }
+        // Spring: gently pull nudge back toward 0
+        const springK = 0.012;
+        const damping = 0.92;
+        p.nudgeVel += -p.nudge * springK;
+        p.nudgeVel *= damping;
+        p.nudge += p.nudgeVel;
+    }
+
+    // Hit test: is the mouse within a threshold of a planet's orbit ring?
+    function isNearPlanet(p, baseAngle) {
+        if (mouseCanvasX === null) return false;
+        const orbitPx = p.orbitR * scale;
+        const angle = baseAngle + p.nudge;
+        const px = cx + Math.cos(angle) * orbitPx;
+        const py = cy + Math.sin(angle) * orbitPx;
+        const dist = Math.hypot(mouseCanvasX - px, mouseCanvasY - py);
+        const pr = Math.max(1.5, p.r * rs());
+        return dist < pr * 6 + 12; // generous hit radius
     }
 
     function frame(ts) {
@@ -343,31 +389,48 @@ function initSolarSystem() {
 
         ctx.clearRect(0, 0, W, H);
 
-        // Orbits
-        PLANETS.forEach((p) => drawOrbit(p.orbitR * scale));
+        // Compute base angles first (needed for hit test and nudge)
+        const baseAngles = PLANETS.map((p) => (elapsed / (p.period * 1000)) * Math.PI * 2);
 
-        // Sun
+        // Update nudge physics and highlight state
+        PLANETS.forEach((p, i) => {
+            const near = isNearPlanet(p, baseAngles[i]);
+            p.highlighted = near;
+            updateNudge(p, near, elapsed);
+        });
+
+        // Draw orbits then planets
+        PLANETS.forEach((p, i) => drawOrbit(p));
         drawSun();
-
-        // Planets
-        PLANETS.forEach((p) => drawPlanet(p, elapsed));
+        PLANETS.forEach((p, i) => drawPlanet(p, baseAngles[i]));
 
         requestAnimationFrame(frame);
     }
 
-    window.addEventListener('resize', () => {
-        resize();
+    // Track mouse relative to canvas
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseCanvasX = e.clientX - rect.left;
+        mouseCanvasY = e.clientY - rect.top;
+    });
+    canvas.addEventListener('mouseleave', () => {
+        mouseCanvasX = null;
+        mouseCanvasY = null;
+        // Let springs settle naturally — don't reset nudge abruptly
+        PLANETS.forEach((p) => {
+            p.highlighted = false;
+        });
     });
 
+    window.addEventListener('resize', resize);
     resize();
     requestAnimationFrame(frame);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initStarfield();
-    initSolarSystem();
-    renderSponsors();
-    renderFeaturedProjects();
-    renderFeaturedArticles();
-    initReveal();
-});
+// Helper — convert hex colour to r,g,b string for rgba()
+function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `${r},${g},${b}`;
+}

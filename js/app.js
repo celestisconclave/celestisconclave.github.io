@@ -314,94 +314,62 @@ async function sha256(message) {
     return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ── CURSOR TRAIL ──────────────────────────────────────────
+// ── CURSOR GLOW ───────────────────────────────────────────
 function initCursorTrail() {
-    // Don't run on touch devices — no cursor to trail
     if (window.matchMedia('(hover: none)').matches) return;
 
-    const PARTICLE_COUNT = 18;
-    const particles = [];
-    let mouseX = -999,
-        mouseY = -999;
-
-    // Create a single canvas overlay for all particles
-    const canvas = document.createElement('canvas');
-    canvas.style.cssText = `
+    const glow = document.createElement('div');
+    glow.style.cssText = `
     position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
     pointer-events: none;
     z-index: 99999;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle,
+      rgba(124,58,237,0.09) 0%,
+      rgba(124,58,237,0.04) 40%,
+      transparent 70%
+    );
+    transition: opacity 0.4s ease;
+    opacity: 0;
+    will-change: transform;
   `;
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
+    document.body.appendChild(glow);
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Each particle has a position, velocity, life, size and colour
-    class Particle {
-        constructor() {
-            this.reset(true);
-        }
-        reset(cold = false) {
-            this.x = mouseX;
-            this.y = mouseY;
-            this.vx = (Math.random() - 0.5) * 0.8;
-            this.vy = (Math.random() - 0.5) * 0.8 - 0.4;
-            this.life = cold ? 0 : 1; // start dead if cold-spawning
-            this.maxLife = 0.6 + Math.random() * 0.4;
-            this.size = 1.5 + Math.random() * 2.5;
-            // Alternate between purple and gold tints
-            this.gold = Math.random() > 0.6;
-        }
-        update() {
-            this.life -= 0.022;
-            this.x += this.vx;
-            this.y += this.vy;
-            this.vy += 0.018; // slight gravity drift downward
-        }
-        draw() {
-            const alpha = Math.max(0, this.life / this.maxLife) * 0.65;
-            if (alpha <= 0) return;
-            const r = this.size * (this.life / this.maxLife);
-            const color = this.gold ? `rgba(212,168,67,${alpha})` : `rgba(167,139,250,${alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
-            ctx.fillStyle = color;
-            ctx.fill();
-        }
-    }
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push(new Particle());
-    }
-
-    let spawnIndex = 0;
+    let curX = 0,
+        curY = 0;
+    let glowX = 0,
+        glowY = 0;
+    let visible = false;
+    let idleTimer = null;
 
     window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        // Spawn 2 particles per mouse move event
-        for (let i = 0; i < 2; i++) {
-            particles[spawnIndex % PARTICLE_COUNT].reset();
-            spawnIndex++;
+        curX = e.clientX;
+        curY = e.clientY;
+        if (!visible) {
+            visible = true;
+            glow.style.opacity = '1';
         }
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+            visible = false;
+            glow.style.opacity = '0';
+        }, 2000);
     });
 
+    window.addEventListener('mouseleave', () => {
+        visible = false;
+        glow.style.opacity = '0';
+    });
+
+    // Smoothly lag behind the cursor for a soft floating feel
     function frame() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const p of particles) {
-            if (p.life > 0) {
-                p.update();
-                p.draw();
-            }
-        }
+        glowX += (curX - glowX) * 0.1;
+        glowY += (curY - glowY) * 0.1;
+        glow.style.left = glowX + 'px';
+        glow.style.top = glowY + 'px';
         requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);

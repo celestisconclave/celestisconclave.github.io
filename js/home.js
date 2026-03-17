@@ -317,7 +317,7 @@ function initSolarSystem() {
         ctx.shadowBlur = 0;
         // Sun label on hover
         const distToSun = mouseCanvasX !== null ? Math.hypot(mouseCanvasX - cx, mouseCanvasY - cy) : Infinity;
-        if (distToSun <= sr * 3.5) {
+        if (distToSun <= sr) {
             const fontSize = Math.max(9, 11 * rs());
             ctx.font = `${fontSize}px Jost, sans-serif`;
             ctx.fillStyle = 'rgba(245,210,110,0.9)';

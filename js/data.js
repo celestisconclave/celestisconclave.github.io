@@ -171,66 +171,6 @@ const SITE_DATA = {
       ],
       "link": "#",
       "featured": true
-    },
-    {
-      "id": 2,
-      "title": "ChemSim — Molecular Dynamics Visualiser",
-      "image": "assets/images/projects/chemsim.jpg",
-      "shortDesc": "An interactive browser-based simulation of molecular dynamics using WebGL, allowing students to visualise intermolecular forces in real time.",
-      "longDesc": "ChemSim was born out of frustration with static textbook diagrams. Intermolecular forces are fundamentally dynamic — so why are they always shown as frozen arrows?\n\nBuilt with Three.js and a custom Verlet integration engine, ChemSim lets users place molecules in a 2D or 3D simulation space and watch them interact. Lennard-Jones potentials govern the van der Waals forces, while a simplified electrostatics model handles dipole interactions.\n\nThe tool is now used in several undergraduate chemistry courses as a supplementary visualisation aid. Future work includes adding solvent effects and a proper quantum mechanical Hamiltonian for small molecules.",
-      "tags": [
-        "Chemistry",
-        "WebGL",
-        "Three.js",
-        "Simulation"
-      ],
-      "link": "https://celestis.github.io/chemsim",
-      "featured": true
-    },
-    {
-      "id": 3,
-      "title": "BioMap — Biodiversity Monitoring Network",
-      "image": "assets/images/projects/biomap.jpg",
-      "shortDesc": "A network of low-cost acoustic sensors deployed across the campus to monitor biodiversity using machine learning classifiers.",
-      "longDesc": "BioMap is an ongoing citizen-science project that turns our campus into a living laboratory. We deployed a network of 12 Raspberry Pi-based acoustic sensors across different ecosystems on campus — forest patches, wetlands, and open fields.\n\nEach sensor records ambient audio continuously, and a TensorFlow Lite model running on-device classifies bird calls, frog choruses, and insect stridulations in real time. The data is aggregated on a central server and visualised on an interactive map that anyone can access.\n\nThe project has so far identified 47 distinct bird species and 12 frog species on campus. The dataset is being shared with the local forest department for conservation planning.",
-      "tags": [
-        "Biology",
-        "Machine Learning",
-        "IoT",
-        "Python"
-      ],
-      "link": "https://github.com/celestis/biomap",
-      "featured": true
-    },
-    {
-      "id": 4,
-      "title": "CryptoLab — Visualising Encryption Algorithms",
-      "image": "assets/images/projects/cryptolab.jpg",
-      "shortDesc": "Step-by-step visual walkthroughs of AES, RSA, and elliptic curve cryptography, designed for students encountering these algorithms for the first time.",
-      "longDesc": "Cryptography courses are notorious for losing students at the point where abstract algebra meets computer science. CryptoLab is our answer to this problem.\n\nThe tool provides animated, step-by-step visualisations of how AES encryption transforms data through its rounds of substitution, permutation, and mixing. For RSA, users can input their own primes (small ones!) and watch the key generation and encryption process unfold. The elliptic curve module visualises point addition and scalar multiplication geometrically.\n\nAll visualisations are built with D3.js and run entirely in the browser. The project has been well-received by several cryptography instructors who use it as a lecture aid.",
-      "tags": [
-        "Cryptography",
-        "Mathematics",
-        "D3.js",
-        "Education"
-      ],
-      "link": "https://celestis.github.io/cryptolab",
-      "featured": false
-    },
-    {
-      "id": 5,
-      "title": "SolarTrack — Smart Solar Panel Controller",
-      "image": "assets/images/projects/solartrack.jpg",
-      "shortDesc": "A dual-axis solar tracking system using stepper motors and a PID controller, increasing panel efficiency by up to 35% compared to fixed mounting.",
-      "longDesc": "Fixed solar panels miss a significant fraction of available irradiance because the sun's position changes throughout the day. SolarTrack solves this with a dual-axis tracking mount that follows the sun from dawn to dusk.\n\nThe controller is built around an Arduino Mega, with a pair of stepper motors driving elevation and azimuth axes. Rather than using a photo-sensor array (which struggles on cloudy days), we implemented an astronomical algorithm that calculates the sun's position based on GPS coordinates and time, giving reliable tracking regardless of weather.\n\nA PID controller smooths out the tracking motion and prevents oscillation. Testing over three months showed a 35% increase in energy yield compared to a fixed panel of identical specification.",
-      "tags": [
-        "Electronics",
-        "Arduino",
-        "Control Systems",
-        "Renewable Energy"
-      ],
-      "link": "https://github.com/celestis/solartrack",
-      "featured": false
     }
   ],
   "articles": [

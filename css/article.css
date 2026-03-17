@@ -97,3 +97,101 @@
     overflow-x: auto;
     overflow-y: visible !important;
 }
+
+/* ── READING PROGRESS BAR ────────────────────────────────── */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(to right, var(--clr-purple), var(--clr-gold));
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* ── READING TIME ────────────────────────────────────────── */
+.reading-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--clr-text-3);
+}
+.reading-time::before {
+  content: '◷';
+  font-size: 0.95rem;
+}
+
+/* ── COPY BUTTON ON CODE BLOCKS ──────────────────────────── */
+.code-block-wrap {
+  position: relative;
+}
+.code-copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-3);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease,
+              background 0.2s ease, border-color 0.2s ease;
+}
+.code-block-wrap:hover .code-copy-btn {
+  opacity: 1;
+}
+.code-copy-btn:hover {
+  color: var(--clr-text);
+  background: rgba(124,58,237,0.15);
+  border-color: var(--clr-purple);
+}
+.code-copy-btn.copied {
+  color: var(--clr-gold-light);
+  border-color: rgba(212,168,67,0.4);
+  background: rgba(212,168,67,0.08);
+  opacity: 1;
+}
+
+/* ── BACK TO TOP BUTTON ──────────────────────────────────── */
+#back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border-2);
+  color: var(--clr-text-3);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 800;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease,
+              background 0.2s ease, border-color 0.2s ease,
+              color 0.2s ease;
+  pointer-events: none;
+}
+#back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+#back-to-top:hover {
+  background: var(--clr-bg-card-2);
+  border-color: var(--clr-gold);
+  color: var(--clr-gold);
+}

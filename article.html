@@ -14,6 +14,11 @@
     <body data-page="Blog">
         <nav id="navbar"></nav>
 
+        <div id="reading-progress"></div>
+        <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+            ↑
+        </button>
+
         <main id="article-main" class="has-hero">
             <!-- Rendered by JS -->
         </main>
@@ -51,6 +56,8 @@
               <span class="article-author">${article.author}</span>
               <span>·</span>
               <span>${formatDate(article.date)}</span>
+              <span>·</span>
+              <span class="reading-time" id="reading-time-badge">reading time</span>
             </div>
           </div>
         </div>
@@ -94,6 +101,107 @@
             }
 
             document.addEventListener('DOMContentLoaded', loadArticle);
+
+            // ── READING TIME ─────────────────────────────────────────
+            function calcReadingTime(text) {
+            const words = text.trim().split(/\s+/).length;
+            const mins  = Math.max(1, Math.round(words / 200));
+            return mins === 1 ? '1 min read' : `${mins} min read`;
+            }
+
+            // ── COPY BUTTONS ON CODE BLOCKS ──────────────────────────
+            function initCopyButtons() {
+            document.querySelectorAll('.md-content pre').forEach(pre => {
+                const wrap = document.createElement('div');
+                wrap.className = 'code-block-wrap';
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(pre);
+
+                const btn = document.createElement('button');
+                btn.className = 'code-copy-btn';
+                btn.textContent = 'Copy';
+                btn.setAttribute('aria-label', 'Copy code');
+                wrap.appendChild(btn);
+
+                btn.addEventListener('click', () => {
+                const code = pre.querySelector('code')?.innerText || pre.innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.textContent = 'Copied ✓';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                    }, 2000);
+                }).catch(() => {
+                    // fallback
+                    const ta = document.createElement('textarea');
+                    ta.value = code;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    btn.textContent = 'Copied ✓';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                    }, 2000);
+                });
+                });
+            });
+            }
+
+            // ── READING PROGRESS BAR ─────────────────────────────────
+            function initReadingProgress() {
+            const bar     = document.getElementById('reading-progress');
+            const backTop = document.getElementById('back-to-top');
+            if (!bar) return;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop  = window.scrollY;
+                const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+                const pct        = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                bar.style.width  = pct + '%';
+
+                // Back to top visibility — show after 300px
+                if (backTop) {
+                backTop.classList.toggle('visible', scrollTop > 300);
+                }
+            }, { passive: true });
+            }
+
+            // ── HOOK INTO loadArticle ─────────────────────────────────
+            // Patch the markdown render call to also init these features
+            const _origLoadArticle = loadArticle;
+            document.addEventListener('DOMContentLoaded', () => {
+            initReadingProgress();
+            });
+
+            // Override the point where article content is set
+            // We do this by observing when article-content gets populated
+            const _contentObserver = new MutationObserver(() => {
+            const content = document.getElementById('article-content');
+            if (!content || content.querySelector('.article-loading')) return;
+            _contentObserver.disconnect();
+
+            // Reading time — count words in rendered text
+            const badge = document.getElementById('reading-time-badge');
+            if (badge) badge.textContent = calcReadingTime(content.innerText);
+
+            // Copy buttons
+            initCopyButtons();
+            });
+
+            // Start observing once DOM is ready — the observer fires when
+            // loadArticle sets the innerHTML of article-content
+            document.addEventListener('DOMContentLoaded', () => {
+            const content = document.getElementById('article-main');
+            if (content) {
+                _contentObserver.observe(content, { childList: true, subtree: true });
+            }
+            });
         </script>
     </body>
 </html>

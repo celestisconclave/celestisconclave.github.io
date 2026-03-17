@@ -42,6 +42,4 @@ At night, the sky is dark because there simply is no sunlight, so it appears dar
 
 The colour of the sky is determined by the interaction between sunlight and the Earth’s atmosphere. Rayleigh scattering explains why shorter wavelengths are more prevalent during the day, and how changes in the light path account for sunrise and sunset changes.
 
----
-
 [^1]: This case is known as Mie scattering

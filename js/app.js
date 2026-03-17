@@ -321,8 +321,8 @@ function initCursorTrail() {
     const glow = document.createElement('div');
     glow.style.cssText = `
     position: fixed;
-    width: 320px;
-    height: 320px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 99999;

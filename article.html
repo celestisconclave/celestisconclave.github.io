@@ -166,12 +166,19 @@
                 window.addEventListener(
                     'scroll',
                     () => {
+                        const article = document.getElementById('article-content');
                         const scrollTop = window.scrollY;
-                        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-                        bar.style.width = pct + '%';
 
-                        // Back to top visibility — show after 300px
+                        if (article) {
+                            // Measure from the top of the article to the bottom of it
+                            const articleTop = article.getBoundingClientRect().top + scrollTop;
+                            const articleBottom = articleTop + article.offsetHeight;
+                            // How far through the article are we?
+                            const progress =
+                                (scrollTop - articleTop) / (articleBottom - articleTop - window.innerHeight);
+                            bar.style.width = Math.min(100, Math.max(0, progress * 100)) + '%';
+                        }
+
                         if (backTop) {
                             backTop.classList.toggle('visible', scrollTop > 300);
                         }

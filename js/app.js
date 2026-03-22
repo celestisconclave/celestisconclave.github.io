@@ -8,13 +8,14 @@ const ADMIN_HASH = 'a3f8c2e9b1d7f4a6e0c5b9d2f8a1e3c7b5d9f2a4e6c8b0d3f5a7e9c1b4d6
 
 // ── ANNOUNCEMENT BANNER ──────────────────────────────────────
 function updateNavbarTop() {
-    const banner = document.getElementById('announcement-banner');
-    const navbar = document.getElementById('navbar');
-    if (!navbar) return;
-    const bannerH = banner ? banner.offsetHeight : 0;
-    navbar.style.top = bannerH + 'px';
-    // Also push the page content down so it starts below both fixed bars
-    document.documentElement.style.setProperty('--banner-height', bannerH + 'px');
+  const banner = document.getElementById('announcement-banner');
+  const navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  const bannerH = banner ? banner.offsetHeight : 0;
+  // Subtract 1px so navbar slightly overlaps the banner bottom edge,
+  // closing the subpixel gap that appears on certain screen sizes
+  navbar.style.top = Math.max(0, bannerH - 1) + 'px';
+  document.documentElement.style.setProperty('--banner-height', bannerH + 'px');
 }
 
 function renderAnnouncement() {

@@ -287,16 +287,21 @@ function initSolarSystem() {
 
     function drawOrbit(p, highlighted) {
         const orbitPx = p.orbitR * scale;
+        // Dash size scales with orbit size so inner orbits don't look cramped
+        const dashLen = Math.max(3, orbitPx * 0.06);
+        const gapLen = Math.max(4, orbitPx * 0.08);
         ctx.beginPath();
         ctx.arc(cx, cy, orbitPx, 0, Math.PI * 2);
+        ctx.setLineDash([dashLen, gapLen]);
         if (highlighted) {
-            ctx.strokeStyle = `rgba(${p._rgb},0.55)`;
+            ctx.strokeStyle = `rgba(${p._rgb},0.65)`;
             ctx.lineWidth = 1.5;
         } else {
-            ctx.strokeStyle = 'rgba(180,160,255,0.10)';
+            ctx.strokeStyle = 'rgba(180,160,255,0.13)';
             ctx.lineWidth = 1;
         }
         ctx.stroke();
+        ctx.setLineDash([]); // reset so nothing else gets dashed
     }
 
     function drawSun() {

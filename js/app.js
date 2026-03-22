@@ -88,12 +88,12 @@ function renderNavbar(activePage = '') {
 
     nav.innerHTML = `
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo-link">
-        <img src="assets/images/logo.png" alt="Celestis Conclave" class="nav-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-        <div class="nav-logo-fallback" style="display:none">
-          <span class="nav-logo-icon">✦</span>
-          <span class="nav-logo-text">Celestis <em>Conclave</em></span>
-        </div>
+    <a href="index.html" class="nav-logo-link">
+        <img src="assets/images/logo.png" alt="Celestis Conclave" class="nav-logo-img" onerror="this.style.display='none'">
+        <span class="nav-wordmark">
+          <span class="nav-wordmark-celestis">Celestis</span>
+          <span class="nav-wordmark-conclave">Conclave</span>
+        </span>
       </a>
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>

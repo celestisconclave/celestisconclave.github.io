@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const target = document.getElementById(href.slice(1));
                 if (target) {
                     e.preventDefault();
-                    const y = target.getBoundingClientRect().top + window.pageYOffset - 100; // 10px above
+                    const y = target.getBoundingClientRect().top + window.pageYOffset - 130; // 10px above
                     window.scrollTo({ top: y, behavior: 'smooth' });
                     // Optionally update the URL hash
                     history.replaceState(null, '', href);

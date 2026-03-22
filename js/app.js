@@ -322,9 +322,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderNavbar(document.body.dataset.page || '');
     renderFooter();
 
-    // Footnote scroll offset for .fn-ref and .fn-back links
+    // Footnote scroll: center target in viewport for all screen sizes
     document.addEventListener('click', function (e) {
-        // Use closest to allow clicking on <sup> or <a>
         const link = e.target.closest('a.fn-back, .fn-ref');
         if (link) {
             const href = link.getAttribute('href');
@@ -332,9 +331,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const target = document.getElementById(href.slice(1));
                 if (target) {
                     e.preventDefault();
-                    const y = target.getBoundingClientRect().top + window.pageYOffset - 130; // 10px above
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                    // Optionally update the URL hash
+                    const rect = target.getBoundingClientRect();
+                    const scrollY = window.pageYOffset;
+                    const targetY = rect.top + scrollY;
+                    const centerY = targetY - window.innerHeight / 2 + rect.height / 2;
+                    window.scrollTo({ top: centerY, behavior: 'smooth' });
                     history.replaceState(null, '', href);
                 }
             }

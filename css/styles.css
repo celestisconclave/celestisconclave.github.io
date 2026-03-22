@@ -897,7 +897,7 @@ button.tag-pill.active {
     padding-left: 1.25rem;
     margin: 1.5em 0;
     color: var(--clr-text-3);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans-serif);
     font-size: 1.1rem;
     font-style: italic;
 }

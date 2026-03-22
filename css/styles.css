@@ -347,6 +347,7 @@ body > section:first-of-type {
     display: flex;
     align-items: center;
     gap: clamp(0.5rem, 2vw, 2rem);
+    margin-left: auto;
 }
 
 .nav-link {

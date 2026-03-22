@@ -269,15 +269,12 @@ body > section:first-of-type {
 .nav-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: 100%;
     padding-inline: clamp(1rem, 4vw, 2.5rem);
     max-width: 1400px;
     margin-inline: auto;
-    gap: 2rem;
 }
 
-/* Spacer pushes links to the far right */
 .nav-inner .nav-logo-link {
     margin-right: auto;
 }

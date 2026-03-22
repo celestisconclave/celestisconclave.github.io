@@ -53,6 +53,7 @@
 }
 
 .hero-tagline {
+    display: block;
     font-family: var(--font-sans-serif);
     font-size: clamp(0.85rem, 1.5vw, 1.05rem);
     font-style: italic;
@@ -100,6 +101,7 @@
     width: clamp(320px, 38vw, 540px);
     aspect-ratio: 1;
     position: relative;
+    margin-right: -2vw;
 }
 
 #solar-canvas {

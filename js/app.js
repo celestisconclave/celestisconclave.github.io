@@ -37,10 +37,13 @@ function renderAnnouncement() {
   `;
     document.body.prepend(banner);
 
-    // Push navbar down to sit below the banner
     requestAnimationFrame(() => {
         updateNavbarTop();
     });
+
+    // Re-measure whenever the window resizes, since banner text
+    // can reflow to more lines on narrow screens
+    window.addEventListener('resize', updateNavbarTop);
 
     // Close button: record dismissal in sessionStorage, then animate out
     document.getElementById('ann-close-btn').addEventListener('click', () => {

@@ -197,6 +197,13 @@ p {
     border-bottom: 1px solid rgba(212, 168, 67, 0.3);
 }
 
+@media (max-width: 600px) {
+    .announcement-banner {
+        padding: 0.6rem 2.5rem 0.6rem 1rem;
+        font-size: 0.82rem;
+    }
+}
+
 .ann-text {
     margin-right: 0.75rem;
 }

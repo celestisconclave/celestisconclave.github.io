@@ -222,7 +222,7 @@ function renderMarkdown(md) {
             <li id="fn-${f.index}" class="fn-item">
             <span class="fn-number">${f.index}</span>
             <span class="fn-text">${f.text}
-                <a href="#fnref-${f.index}" class="fn-back" title="Back to text">↩</a>
+                <a href="#fnref-${f.index}" class="fn-back" title="Back to text"><i class="fa-solid fa-rotate-left"></i></a>
             </span>
             </li>`,
             )

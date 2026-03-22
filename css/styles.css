@@ -676,8 +676,8 @@ button.tag-pill.active {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(6px);
+    background: rgba(5, 3, 12, 0.7);
+    backdrop-filter: blur(12px);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -695,8 +695,10 @@ button.tag-pill.active {
 }
 
 .modal {
-    background: var(--clr-bg-card);
-    border: 1px solid var(--clr-border-2);
+    background: rgba(26, 22, 40, 0.55);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(180, 140, 255, 0.18);
     border-radius: var(--radius-lg);
     max-width: 800px;
     width: 100%;
@@ -706,7 +708,11 @@ button.tag-pill.active {
     position: relative;
     transform: translateY(20px);
     transition: transform var(--transition);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
+
 .modal-overlay.open .modal {
     transform: translateY(0);
 }

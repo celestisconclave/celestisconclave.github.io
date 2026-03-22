@@ -53,8 +53,7 @@
 }
 
 .hero-tagline {
-    display: block;
-    font-family: var(--font-sans-serif);
+    font-family: var(--font-serif);
     font-size: clamp(0.85rem, 1.5vw, 1.05rem);
     font-style: italic;
     font-weight: 300;
@@ -62,6 +61,7 @@
     color: var(--clr-text-3);
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.55rem;
     margin-bottom: 1.5rem;
 }
@@ -198,6 +198,9 @@
         width: 340px;
         max-width: 70vw;
         margin-inline: auto;
+    }
+    .hero-tagline {
+        justify-content: center;
     }
 }
 

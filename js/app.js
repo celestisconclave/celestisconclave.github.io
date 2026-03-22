@@ -321,4 +321,23 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAnnouncement();
     renderNavbar(document.body.dataset.page || '');
     renderFooter();
+
+    // Footnote scroll offset for .fn-ref and .fn-back links
+    document.addEventListener('click', function (e) {
+        // Use closest to allow clicking on <sup> or <a>
+        const link = e.target.closest('a.fn-back, .fn-ref');
+        if (link) {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const target = document.getElementById(href.slice(1));
+                if (target) {
+                    e.preventDefault();
+                    const y = target.getBoundingClientRect().top + window.pageYOffset - 10; // 10px above
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                    // Optionally update the URL hash
+                    history.replaceState(null, '', href);
+                }
+            }
+        }
+    });
 });

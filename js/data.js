@@ -160,7 +160,7 @@ const SITE_DATA = {
     {
       "id": 1,
       "title": "The Celestis Conclave Opening Event",
-      "image": "assets/images/projects/1774502926472-ChatGPT-Image-Mar-26,-2026,-10_52_39-AM.png",
+      "image": "assets/images/projects/opening-event.png",
       "shortDesc": "Our opening event is a STEM challenge where participants apply mathematics, science, and programming to solve realistic scientific problems. Participants build models, simulate systems, and present innovative solutions, with top teams advancing to a panel discussion on broader scientific and ethical issues.",
       "mdFile": "assets/projects/md/opening-event.md",
       "tags": [

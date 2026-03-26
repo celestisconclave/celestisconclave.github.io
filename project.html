@@ -46,14 +46,6 @@
             <div class="card-tags proj-page-tags">${tagPills(project.tags)}</div>
             <h1 class="proj-page-title">${project.title}</h1>
             <p class="proj-page-short">${project.shortDesc}</p>
-            ${
-                project.link
-                    ? `
-              <a href="${project.link}" target="_blank" rel="noopener" class="btn btn-gold proj-page-link">
-                View Project →
-              </a>`
-                    : ''
-            }
           </div>
         </div>
 

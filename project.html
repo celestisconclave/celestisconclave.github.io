@@ -46,6 +46,14 @@
             <div class="card-tags proj-page-tags">${tagPills(project.tags)}</div>
             <h1 class="proj-page-title">${project.title}</h1>
             <p class="proj-page-short">${project.shortDesc}</p>
+            ${
+                project.link
+                    ? `
+              <a href="${project.link}" target="_blank" rel="noopener" class="btn btn-gold proj-page-link">
+                View Project →
+              </a>`
+                    : ''
+            }
           </div>
         </div>
 
@@ -59,18 +67,6 @@
                 <h4 class="proj-sidebar-label">Tags</h4>
                 <div class="proj-sidebar-tags">${tagPills(project.tags)}</div>
               </div>
-              ${
-                  project.link
-                      ? `
-              <div class="proj-sidebar-block">
-                <h4 class="proj-sidebar-label">Links</h4>
-                <a href="${project.link}" target="_blank" rel="noopener" class="proj-sidebar-link">
-                  <span class="proj-sidebar-link-icon">⎋</span>
-                  ${project.link.replace(/^https?:\/\//, '')}
-                </a>
-              </div>`
-                      : ''
-              }
             </aside>
           </div>
         </div>

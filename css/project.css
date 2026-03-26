@@ -9,19 +9,13 @@
     position: relative;
     display: flex;
     align-items: flex-end;
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
-    margin-bottom: -4rem;
+    margin-bottom: 0;
 }
 
 .proj-page-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        160deg,
-        rgba(13, 11, 20, 0.55) 0%,
-        rgba(13, 11, 20, 0.4) 40%,
-        rgba(13, 11, 20, 0.92) 100%
-    );
+    background: rgba(0, 0, 0, 0.6);
 }
 
 .proj-page-hero-inner {
@@ -161,7 +155,6 @@
         min-width: 200px;
     }
     .proj-page-hero {
-        clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
         min-height: 50vh;
     }
 }

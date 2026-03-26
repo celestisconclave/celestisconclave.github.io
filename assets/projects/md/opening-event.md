@@ -1,7 +1,9 @@
-Our opening event provides students a competitive platform to demonstrate their ability to integrate concepts across mathematics, science, and computer science through a realistic problem-solving scenario. In the first round, participants will be provided a realistic scenario related to astrophysics, and will be tasked with developing mathematical models and digital simulations to analyze the problem and propose a solution.\n\nFinal reports will be in the form of reports or presentations, where teams will explain their methodology, models, and findings. The entries will be evaluated based on accuracy, creativity, feasibility, and clarity.\n\nThe top teams will progress to the second round, which features a panel discussion on deeper, complex topics such as the ethical implications of space exploration and technological advancement.
+Our opening event provides students a competitive platform to demonstrate their ability to integrate concepts across mathematics, science, and computer science through a realistic problem-solving scenario. In the first round, participants will be provided a realistic scenario related to astrophysics, and will be tasked with developing mathematical models and digital simulations to analyze the problem and propose a solution.
+Final reports will be in the form of reports or presentations, where teams will explain their methodology, models, and findings. The entries will be evaluated based on accuracy, creativity, feasibility, and clarity.
+The top teams will progress to the second round, which features a panel discussion on deeper, complex topics such as the ethical implications of space exploration and technological advancement.
 
 ### Image Test
-![](https://upload.wikimedia.org/wikipedia/commons/4/40/Nissan_Leaf_012.JPG)
+![Nissan Leaf](https://upload.wikimedia.org/wikipedia/commons/4/40/Nissan_Leaf_012.JPG)
 
 ### Maths Test
 $\sqrt{b^2 - 4ac}$ is the discriminant in the quadratic formula[^1]

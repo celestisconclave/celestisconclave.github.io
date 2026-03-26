@@ -3,7 +3,7 @@ Final reports will be in the form of reports or presentations, where teams will 
 The top teams will progress to the second round, which features a panel discussion on deeper, complex topics such as the ethical implications of space exploration and technological advancement.
 
 ### Image Test
-![Nissan Leaf](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Webb%27s_First_Deep_Field.jpg/960px-Webb%27s_First_Deep_Field.jpg)
+![Example](https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg)
 
 ### Maths Test
 $\sqrt{b^2 - 4ac}$ is the discriminant in the quadratic formula[^1]

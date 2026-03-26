@@ -162,7 +162,7 @@ const SITE_DATA = {
       "title": "The Celestis Conclave Opening Event",
       "image": "assets/images/projects/1774502926472-ChatGPT-Image-Mar-26,-2026,-10_52_39-AM.png",
       "shortDesc": "Our opening event is a STEM challenge where participants apply mathematics, science, and programming to solve realistic scientific problems. Participants build models, simulate systems, and present innovative solutions, with top teams advancing to a panel discussion on broader scientific and ethical issues.",
-      "longDesc": "Our opening event provides students a competitive platform to demonstrate their ability to integrate concepts across mathematics, science, and computer science through a realistic problem-solving scenario. In the first round, participants will be provided a realistic scenario related to astrophysics, and will be tasked with developing mathematical models and digital simulations to analyze the problem and propose a solution.\n\nFinal reports will be in the form of reports or presentations, where teams will explain their methodology, models, and findings. The entries will be evaluated based on accuracy, creativity, feasibility, and clarity.\n\nThe top teams will progress to the second round, which features a panel discussion on deeper, complex topics such as the ethical implications of space exploration and technological advancement.",
+      "mdFile": "assets/projects/md/opening-event.md",
       "tags": [
         "Maths",
         "Physics",

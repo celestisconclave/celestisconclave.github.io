@@ -244,18 +244,18 @@ function renderArticlesList() {
         .join('');
 }
 
-window.toggleFeatured = function(type, id, value) {
-  if (type === 'project') {
-    const proj = localData.projects.find(p => p.id === id);
-    if (proj) proj.featured = value;
-    renderProjectsList();
-  } else if (type === 'article') {
-    const art = localData.articles.find(a => a.id === id);
-    if (art) art.featured = value;
-    renderArticlesList();
-  }
-  markChanged();
-  renderOverview();
+window.toggleFeatured = function (type, id, value) {
+    if (type === 'project') {
+        const proj = localData.projects.find((p) => p.id === id);
+        if (proj) proj.featured = value;
+        renderProjectsList();
+    } else if (type === 'article') {
+        const art = localData.articles.find((a) => a.id === id);
+        if (art) art.featured = value;
+        renderArticlesList();
+    }
+    markChanged();
+    renderOverview();
 };
 
 // ── RESOURCES LIST ────────────────────────────────────────────
@@ -398,16 +398,21 @@ function openProjectForm(id = null) {
       ${isEdit ? `<p style="font-size:.75rem;color:var(--clr-text-3);margin-top:.4rem">Current: ${p.image}</p>` : ''}
     </div>
     <div class="form-group">
+      <label>Project Markdown File (.md)</label>
+      <div class="md-upload-area">
+        <div class="image-upload-icon">📄</div>
+        <div class="image-upload-label">Click to upload .md file</div>
+        <input type="file" id="proj-md-file" accept=".md,text/markdown">
+        <p class="md-upload-filename" id="proj-md-filename">${isEdit && p.mdFile ? p.mdFile : ''}</p>
+      </div>
+    </div>
+    <div class="form-group">
       <label for="proj-title">Title *</label>
       <input type="text" id="proj-title" class="form-input" value="${isEdit ? escAttr(p.title) : ''}" placeholder="Project title">
     </div>
     <div class="form-group">
-      <label for="proj-short">Short Description *</label>
+      <label for="proj-short">Short Description * <span style="font-size:.75rem;color:var(--clr-text-3);font-weight:400;letter-spacing:0">(shown on cards)</span></label>
       <textarea id="proj-short" class="form-textarea" style="min-height:80px">${isEdit ? p.shortDesc : ''}</textarea>
-    </div>
-    <div class="form-group">
-      <label for="proj-long">Full Description (Markdown supported)</label>
-      <textarea id="proj-long" class="form-textarea" style="min-height:160px">${isEdit ? p.longDesc : ''}</textarea>
     </div>
     <div class="form-group">
       <label>Tags</label>
@@ -427,8 +432,16 @@ function openProjectForm(id = null) {
 
     tagsControl.init();
     initImagePreview('proj-img-file', 'proj-img-preview');
-}
 
+    document.getElementById('proj-md-file')?.addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (f) {
+            const el = document.getElementById('proj-md-filename');
+            el.textContent = f.name;
+            el.style.display = 'block';
+        }
+    });
+}
 window.saveProject = function (id) {
     const title = document.getElementById('proj-title').value.trim();
     const shortDesc = document.getElementById('proj-short').value.trim();
@@ -441,48 +454,58 @@ window.saveProject = function (id) {
         (el) => el.dataset.tag,
     );
     const imgFile = document.getElementById('proj-img-file').files[0];
+    const mdFile = document.getElementById('proj-md-file').files[0];
 
-    const saveData = (imagePath) => {
-        if (id) {
-            const proj = localData.projects.find((p) => p.id === id);
-            if (proj) {
-                proj.title = title;
-                proj.shortDesc = shortDesc;
-                proj.longDesc = document.getElementById('proj-long').value.trim();
-                proj.tags = tags;
-                proj.link = document.getElementById('proj-link').value.trim();
-                if (imagePath) proj.image = imagePath;
-            }
-        } else {
-            const newId = Math.max(0, ...localData.projects.map((p) => p.id)) + 1;
-            localData.projects.push({
-                id: newId,
-                title,
-                shortDesc,
-                longDesc: document.getElementById('proj-long').value.trim(),
-                tags,
-                link: document.getElementById('proj-link').value.trim(),
-                featured: false,
-                image: imagePath || 'assets/images/projects/placeholder.jpg',
-                _newImageFile: imgFile || null,
-            });
-        }
-        markChanged();
-        renderProjectsList();
-        renderOverview();
-        closeEditModal();
-        showToast(id ? 'Project updated.' : 'Project added. Push to publish.');
-    };
+    if (!window._pendingFiles) window._pendingFiles = {};
+
+    const fname = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    let imgPath = null,
+        mdPath = null;
 
     if (imgFile) {
-        const fname = `assets/images/projects/${Date.now()}-${imgFile.name.replace(/\s+/g, '-')}`;
-        // Store file ref for upload during push
-        if (!window._pendingFiles) window._pendingFiles = {};
-        window._pendingFiles[fname] = imgFile;
-        saveData(fname);
-    } else {
-        saveData(null);
+        imgPath = `assets/images/projects/${fname}.${imgFile.name.split('.').pop()}`;
+        window._pendingFiles[imgPath] = imgFile;
     }
+    if (mdFile) {
+        mdPath = `assets/projects/md/${fname}.md`;
+        window._pendingFiles[mdPath] = mdFile;
+    }
+
+    if (id) {
+        const proj = localData.projects.find((p) => p.id === id);
+        if (proj) {
+            proj.title = title;
+            proj.shortDesc = shortDesc;
+            proj.tags = tags;
+            proj.link = document.getElementById('proj-link').value.trim();
+            if (imgPath) proj.image = imgPath;
+            if (mdPath) proj.mdFile = mdPath;
+            // Remove longDesc if mdFile is now set
+            if (proj.mdFile) delete proj.longDesc;
+        }
+    } else {
+        const newId = Math.max(0, ...localData.projects.map((p) => p.id)) + 1;
+        localData.projects.push({
+            id: newId,
+            title,
+            shortDesc,
+            tags,
+            link: document.getElementById('proj-link').value.trim(),
+            image: imgPath || 'assets/images/projects/placeholder.jpg',
+            mdFile: mdPath || null,
+            longDesc: mdPath ? null : shortDesc, // fallback only if no md file
+            featured: false,
+        });
+    }
+
+    markChanged();
+    renderProjectsList();
+    renderOverview();
+    closeEditModal();
+    showToast(id ? 'Project updated.' : 'Project added. Push to publish.');
 };
 
 // ── ARTICLE FORM ──────────────────────────────────────────────

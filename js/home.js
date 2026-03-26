@@ -165,7 +165,7 @@ function renderFeaturedProjects() {
     grid.innerHTML = featured
         .map(
             (p) => `
-    <div class="card proj-card reveal" onclick="window.location='projects.html'">
+    <a href="project.html?id=${p.id}" class="card proj-card reveal">
       <img class="card-img" src="${p.image}" alt="${p.title}"
         onerror="this.style.background='var(--clr-bg-card-2)'; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 800 450\\'%3E%3Crect fill=\\'%231a1628\\' width=\\'800\\' height=\\'450\\'/%3E%3Ctext fill=\\'%23443a60\\' font-size=\\'80\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dominant-baseline=\\'middle\\'%3E◈%3C/text%3E%3C/svg%3E'">
       <div class="proj-card-body">
@@ -173,7 +173,7 @@ function renderFeaturedProjects() {
         <h3 class="proj-card-title">${p.title}</h3>
         <p class="proj-card-desc">${p.shortDesc}</p>
       </div>
-    </div>
+    </a>
   `,
         )
         .join('');

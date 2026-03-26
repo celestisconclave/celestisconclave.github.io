@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project — Celestis Conclave</title>
+        <link rel="stylesheet" href="css/styles.css" />
+        <link rel="stylesheet" href="css/project.css" />
+        <link rel="icon" href="assets/images/logo.png" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+    </head>
+    <body data-page="Projects">
+        <nav id="navbar"></nav>
+
+        <main id="project-main" class="has-hero"></main>
+
+        <footer id="footer"></footer>
+
+        <script src="js/data.js"></script>
+        <script src="js/app.js"></script>
+        <script>
+            async function loadProject() {
+                const params = new URLSearchParams(window.location.search);
+                const id = parseInt(params.get('id'));
+                const project = SITE_DATA.projects.find((p) => p.id === id);
+                const main = document.getElementById('project-main');
+
+                if (!project) {
+                    main.innerHTML = `
+          <div class="container section" style="text-align:center; padding-top:8rem;">
+            <h2>Project not found</h2>
+            <a href="projects.html" class="btn btn-outline mt-md">← Back to Projects</a>
+          </div>`;
+                    return;
+                }
+
+                document.title = `${project.title} — Celestis Conclave`;
+
+                main.innerHTML = `
+        <div class="proj-page-hero" style="background-image: url('${project.image}')">
+          <div class="proj-page-hero-overlay"></div>
+          <div class="container proj-page-hero-inner">
+            <a href="projects.html" class="proj-page-back">← Back to Projects</a>
+            <div class="card-tags proj-page-tags">${tagPills(project.tags)}</div>
+            <h1 class="proj-page-title">${project.title}</h1>
+            <p class="proj-page-short">${project.shortDesc}</p>
+            ${
+                project.link
+                    ? `
+              <a href="${project.link}" target="_blank" rel="noopener" class="btn btn-gold proj-page-link">
+                View Project →
+              </a>`
+                    : ''
+            }
+          </div>
+        </div>
+
+        <div class="proj-page-body-wrap">
+          <div class="container proj-page-layout">
+            <article class="proj-page-content md-content" id="project-content">
+              <div class="proj-page-loading">Loading…</div>
+            </article>
+            <aside class="proj-page-sidebar">
+              <div class="proj-sidebar-block">
+                <h4 class="proj-sidebar-label">Tags</h4>
+                <div class="proj-sidebar-tags">${tagPills(project.tags)}</div>
+              </div>
+              ${
+                  project.link
+                      ? `
+              <div class="proj-sidebar-block">
+                <h4 class="proj-sidebar-label">Links</h4>
+                <a href="${project.link}" target="_blank" rel="noopener" class="proj-sidebar-link">
+                  <span class="proj-sidebar-link-icon">⎋</span>
+                  ${project.link.replace(/^https?:\/\//, '')}
+                </a>
+              </div>`
+                      : ''
+              }
+            </aside>
+          </div>
+        </div>
+      `;
+
+                // Load content — prefer mdFile, fall back to longDesc
+                const contentEl = document.getElementById('project-content');
+                if (project.mdFile) {
+                    try {
+                        const resp = await fetch(project.mdFile);
+                        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                        const md = await resp.text();
+                        contentEl.innerHTML = renderMarkdown(md);
+                    } catch {
+                        contentEl.innerHTML = renderMarkdown(project.longDesc || project.shortDesc);
+                    }
+                } else {
+                    contentEl.innerHTML = renderMarkdown(project.longDesc || project.shortDesc);
+                }
+
+                // KaTeX
+                requestAnimationFrame(() => {
+                    if (typeof renderMathInElement !== 'undefined') {
+                        renderMathInElement(contentEl, {
+                            delimiters: [
+                                { left: '$$', right: '$$', display: true },
+                                { left: '$', right: '$', display: false },
+                            ],
+                            throwOnError: false,
+                        });
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', loadProject);
+        </script>
+    </body>
+</html>
